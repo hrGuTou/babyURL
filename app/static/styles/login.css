@@ -2,6 +2,13 @@ form {
         border: 3px solid #f1f1f1;
     }
 
+    h2 {
+    width:500px;
+    margin: 0 auto;
+    background: white;
+    text-align: center;
+}
+
 
     input[type=text],
     input[type=password] {
@@ -9,7 +16,7 @@ form {
         padding: 12px 20px;
         margin: 8px 0;
         display: inline-block;
-        border: 1px solid #ccc;
+        border: 1px solid rgb(223, 190, 190);
         box-sizing: border-box;
     }
 
@@ -44,7 +51,7 @@ form {
 
 
     img.avatar {
-        width: 40%;
+        width: 30%;
         border-radius: 50%;
     }
 
@@ -68,4 +75,6 @@ form {
         .cancelbtn {
             width: 100%;
         }
+
+    }
     }
