@@ -47,7 +47,7 @@ class API:
                     user = User(user_info)
                     if user.verify(password):
                         login_user(user, remember=remember)
-                        return render_template('index.html', username=username)
+                        return redirect('/')
 
                 msg = "Invalid username/password"
             return render_template('login.html', message=msg)
@@ -60,6 +60,11 @@ class API:
 
         @self.app.route('/register', methods=["GET", "POST"])
         def create():
+            if request.method == 'POST':
+                username = request.form['username']
+                password = request.form['password']
+                userManager.createUser(username, password)
+                return redirect('/login')
             return render_template('register.html')
 
 
