@@ -1,14 +1,5 @@
-from flask import Flask
+from API import API
 
-app = Flask(__name__)
-
-
-@app.route('/')
-def hello_world():
-    return 'Hello, World!'
-
-@app.route('/user/<longURL>')
-def profile(longURL):
-    return "babyurl.com/"
-
-app.run()
+if __name__ == "__main__":
+    api = API()
+    api.run()
