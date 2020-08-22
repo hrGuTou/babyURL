@@ -10,13 +10,14 @@ from app.Authentication.UserManager import UserManager
 from app.Authentication.User import User
 from app.Util.Convert import *
 from app.Util.SnowFlake_Counter import *
-from app.Util.DB import DB
+from app.Util.AWSManager import AWSManger
+
 
 class API:
     def __init__(self):
         self.app = Flask(__name__)
+        self.aws = AWSManger()
         self.counter = generator(1,1)
-        self.DB = DB()
         self.init()
 
 
@@ -53,7 +54,7 @@ class API:
             if request.method == 'POST':
                 longURL = request.form['longurl']
                 shortURL = self.shorten(longURL)
-                userManager.saveURL(usr, shortURL)
+                userManager.saveUserURL(usr, shortURL)
                 return render_template('index.html', username=usr, shortURL=shortURL)
 
             return render_template('index.html', username=usr, shortURL=shortURL)
@@ -95,20 +96,15 @@ class API:
         @self.app.route('/<shortURL>')
         def decodeURL(shortURL):
             id = str(toBase10(shortURL))
-            print(id)
-            try:
-                with open('DB.json','r') as f:
-                    data = json.load(f)
-            except Exception as e:
-                print(e)
-            else:
-                if id in data:
-                    return redirect(data[id], code=302)
-                return render_template('404.html'), 404
+            longURL = self.aws.getURL(id)
+            if longURL:
+                return redirect(longURL, code=302)
+
+            return render_template('404.html'), 404
 
     def shorten(self, longURL):
         id = self.counter.__next__()
-        self.DB.saveToDB(id,longURL)
+        self.aws.saveURL(id, longURL)
         shortURL = toBase62(id)
         return shortURL
 

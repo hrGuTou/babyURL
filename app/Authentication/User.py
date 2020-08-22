@@ -1,6 +1,7 @@
 from flask_login import UserMixin
 from werkzeug.security import check_password_hash
 import json
+from ..Util.AWSManager import AWSManger
 
 def load():
     try:
@@ -15,9 +16,10 @@ def load():
 
 class User(UserMixin):
     def __init__(self, user):
-        self.username = user.get('username')
-        self.password = user.get('password')
-        self.id = user.get('id')
+        self.aws = AWSManger()
+        self.username = user[0].get('username')
+        self.password = user[0].get('password')
+        self.id = user[0].get('id')
 
     def verify(self, password):
         return check_password_hash(self.password, password)
@@ -27,9 +29,11 @@ class User(UserMixin):
 
     @staticmethod
     def get(user_id):
-        for username, v in load().items():
-            if v.get('id') == user_id:
-                return User(v)
+        aws = AWSManger()
+        val = aws.getByID(user_id)
+        if val:
+            return User(val)
+
         return None
 
 
