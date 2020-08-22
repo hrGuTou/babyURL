@@ -6,29 +6,37 @@ digits = ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
 
 
 def toBase62(input):
-    res = []
+    chs = []
+    while input > 0:
+        r = input % 62
+        input //= 62
 
-    while (input > 0):
-        res.append(digits[input % 62])
-        input = int(input / 62)
+        chs.append(digits[r])
 
-    return ''.join(res[::-1])
+    if len(chs) > 0:
+        chs.reverse()
+    else:
+        chs.append("0")
+
+    s = "".join(chs)
+    s = digits[0] * max(1 - len(s), 0) + s
+    return s
 
 
 def toBase10(input):
     res = 0
-    base = 1
-    for i in range(len(input)-1, -1, -1):
-        idx =0
-        for j in range(len(digits)):
-            if digits[j] == input[i]:
-                idx = j
-        res += idx * base
-        base *= 62
+    base = len(digits)
+    inputLen = len(input)
+
+    idx = 0
+    for char in input:
+        power = (inputLen-(idx+1))
+        res += digits.index(char) * (base**power)
+        idx += 1
 
     return res
 
 
 if __name__ == "__main__":
-    print(toBase62(10000))
-    print(toBase10("1C"))
+    print(toBase62(404))
+    print(toBase10("404"))

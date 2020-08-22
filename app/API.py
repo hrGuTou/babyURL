@@ -1,3 +1,4 @@
+import json
 from datetime import timedelta
 
 import flask_login
@@ -42,7 +43,6 @@ class API:
         @login_manager.unauthorized_handler
         def unauthorized_callback():
             return redirect('/login')
-
 
         @self.app.route('/', methods=['GET', 'POST'])
         @login_required
@@ -91,19 +91,26 @@ class API:
                 return redirect('/login')
             return render_template('register.html')
 
+        @self.app.errorhandler(404)
         @self.app.route('/<shortURL>')
-        def decodeURL(longURL):
-            id = toBase10(longURL)
+        def decodeURL(shortURL):
+            id = str(toBase10(shortURL))
             print(id)
-            
-
+            try:
+                with open('DB.json','r') as f:
+                    data = json.load(f)
+            except Exception as e:
+                print(e)
+            else:
+                if id in data:
+                    return redirect(data[id], code=302)
+                return render_template('404.html'), 404
 
     def shorten(self, longURL):
         id = self.counter.__next__()
         self.DB.saveToDB(id,longURL)
         shortURL = toBase62(id)
         return shortURL
-
 
     def run(self):
         self.app.run()
