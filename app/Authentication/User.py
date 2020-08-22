@@ -27,9 +27,9 @@ class User(UserMixin):
 
     @staticmethod
     def get(user_id):
-        for user in load():
-            if user.get('id') == user_id:
-                return User(user)
+        for username, v in load().items():
+            if v.get('id') == user_id:
+                return User(v)
         return None
 
 

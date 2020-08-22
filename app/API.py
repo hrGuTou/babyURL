@@ -1,17 +1,21 @@
+from datetime import timedelta
+
 import flask_login
-from flask import Flask, request, render_template
+from flask import Flask, request, render_template, session
 from flask_login import LoginManager, login_required, login_user, logout_user
 from werkzeug.utils import redirect
 
 from app.Authentication.UserManager import UserManager
 from app.Authentication.User import User
-from app.Util.Counter import Counter
 from app.Util.Convert import *
+from app.Util.SnowFlake_Counter import *
+from app.Util.DB import DB
 
 class API:
     def __init__(self):
         self.app = Flask(__name__)
-        self.counter = Counter()
+        self.counter = generator(1,1)
+        self.DB = DB()
         self.init()
 
 
@@ -22,6 +26,14 @@ class API:
         login_manager = LoginManager()
         login_manager.init_app(self.app)
         login_manager.login_view = 'login'
+        login_manager.refresh_view = 'relogin'
+        login_manager.needs_refresh_message = (u"Session timedout, please re-login")
+        login_manager.needs_refresh_message_category = "info"
+
+        @self.app.before_request
+        def before_request():
+            session.permanent = True
+            self.app.permanent_session_lifetime = timedelta(seconds=10)
 
         @login_manager.user_loader
         def load_user(user_id):
@@ -41,6 +53,7 @@ class API:
             if request.method == 'POST':
                 longURL = request.form['longurl']
                 shortURL = self.shorten(longURL)
+                userManager.saveURL(usr, shortURL)
                 return render_template('index.html', username=usr, shortURL=shortURL)
 
             return render_template('index.html', username=usr, shortURL=shortURL)
@@ -80,13 +93,9 @@ class API:
 
 
 
-
-
-
-
-
     def shorten(self, longURL):
-        id = self.counter.nextID()
+        id = self.counter.__next__()
+        self.DB.saveToDB(id,longURL)
         shortURL = toBase62(id)
         return shortURL
 

@@ -7,6 +7,8 @@ class Counter:
         self.lastestID += 1
         return self.lastestID
 
+
+
 if __name__ == "__main__":
 
     c = Counter()

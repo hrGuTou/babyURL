@@ -6,7 +6,7 @@ import uuid
 
 class UserManager:
     def __init__(self):
-        self.USERS = []
+        self.USERS = {}
         self.load()
 
     def load(self):
@@ -34,14 +34,19 @@ class UserManager:
         user = {
             "username": username,
             "password": generate_password_hash(password),
-            "id": str(uuid.uuid4())
+            "id": str(uuid.uuid4()),
+            "url": []
         }
 
-        self.USERS.append(user)
+        self.USERS[username]=user
         self.save()
 
     def getUser(self, username):
-        for user in self.USERS:
-            if user.get('username') == username:
-                return user
+        if self.USERS:
+            if username in self.USERS:
+                return self.USERS[username]
 
+    def saveURL(self,username, shortURL):
+        # save gen short url under current user
+        self.USERS[username]["url"].append(shortURL)
+        self.save()
