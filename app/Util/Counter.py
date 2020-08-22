@@ -1,8 +1,8 @@
 import os
 
 cur = dir(os)
-count = 1
+latest_ID = 1
 for i in cur:
-    count += 1
-    print(count,i)
+    latest_ID += 1
+    print(latest_ID,i)
 
