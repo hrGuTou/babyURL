@@ -7,24 +7,24 @@
 </head>
 <body>
 
-<form action="" method="post">
+<form action="/action_page.php">
   <div class="container">
     <h1>Register</h1>
     <p>Complete this form to create a babyURL account.</p>
     <hr>
 
     <label for="email"><b>Email</b></label>
-    <input type="text" placeholder="Enter Your Email" name="username" id="username" required>
+    <input type="text" placeholder="Enter Your Email" name="email" id="email" required>
 
     <label for="psw"><b>Password</b></label>
-    <input type="password" placeholder="Enter Password" name="password" id="password" required>
+    <input type="password" placeholder="Enter Password" name="psw" id="psw" required>
 
     <label for="psw-repeat"><b>Confirm Password</b></label>
     <input type="password" placeholder="Confirm Your Password" name="psw-repeat" id="psw-repeat" required>
     <hr>
     <p>By creating an account you agree to our <a href="tbd">Terms & Conditions</a>.</p>
 
-    <button type="submit" class="registerbtn" value="register">Register</button>
+    <button type="submit" class="registerbtn" onclick="submitForm()">Register</button>
   </div>
   
   <div class="container signin">
@@ -32,7 +32,18 @@
   
     <p id="confirm"></p>
 
-    
+    <script>
+    function submitForm() {
+      var txt;
+      var r = confirm("Click continue to create your account!");
+      if (r == true) {
+        txt = "Your account has been created!";
+      } else {
+        txt = "You have choosen not to create an account!";
+      }
+      document.getElementById("confirm").innerHTML = txt;
+    }
+    </script>
   </div>
 </form>
 

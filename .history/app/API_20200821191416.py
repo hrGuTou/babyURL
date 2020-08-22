@@ -63,8 +63,9 @@ class API:
             if request.method == 'POST':
                 username = request.form['username']
                 password = request.form['password']
-                userManager.createUser(username, password)
-                return redirect('/login')
+                #userManager.createUser(username, password)
+                print(username, password)
+                #return redirect('/login')
             return render_template('register.html')
 
 
