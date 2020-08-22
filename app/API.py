@@ -5,12 +5,15 @@ from werkzeug.utils import redirect
 
 from app.Authentication.UserManager import UserManager
 from app.Authentication.User import User
-
+from app.Util.Counter import Counter
+from app.Util.Convert import *
 
 class API:
     def __init__(self):
         self.app = Flask(__name__)
+        self.counter = Counter()
         self.init()
+
 
     def init(self):
         userManager = UserManager()
@@ -28,11 +31,19 @@ class API:
         def unauthorized_callback():
             return redirect('/login')
 
-        @self.app.route('/')
+
+        @self.app.route('/', methods=['GET', 'POST'])
         @login_required
-        def hello_world():
+        def main():
             usr = flask_login.current_user.username
-            return render_template('index.html', username=usr)
+            shortURL = None
+
+            if request.method == 'POST':
+                longURL = request.form['longurl']
+                shortURL = self.shorten(longURL)
+                return render_template('index.html', username=usr, shortURL=shortURL)
+
+            return render_template('index.html', username=usr, shortURL=shortURL)
 
         @self.app.route('/login', methods=['GET','POST'])
         def login():
@@ -71,16 +82,13 @@ class API:
 
 
 
-        @self.app.route('/api/short')
-        @login_required
-        def shorten():
-            pass
-        # TODO: implementation for shorten url
 
 
 
-
-
+    def shorten(self, longURL):
+        id = self.counter.nextID()
+        shortURL = toBase62(id)
+        return shortURL
 
 
     def run(self):

@@ -30,5 +30,5 @@ def toBase10(input):
 
 
 if __name__ == "__main__":
-    print(toBase62(100))
+    print(toBase62(10000))
     print(toBase10("1C"))
