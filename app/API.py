@@ -92,8 +92,10 @@ class API:
             return render_template('register.html')
 
         @self.app.route('/<shortURL>')
-        def decodeURL():
-            pass
+        def decodeURL(longURL):
+            id = toBase10(longURL)
+            print(id)
+            
 
 
     def shorten(self, longURL):
