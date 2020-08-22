@@ -91,6 +91,9 @@ class API:
                 return redirect('/login')
             return render_template('register.html')
 
+        @self.app.route('/<shortURL>')
+        def decodeURL():
+            pass
 
 
     def shorten(self, longURL):
