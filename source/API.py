@@ -6,11 +6,11 @@ from flask import Flask, request, render_template, session
 from flask_login import LoginManager, login_required, login_user, logout_user
 from werkzeug.utils import redirect
 
-from app.Authentication.UserManager import UserManager
-from app.Authentication.User import User
-from app.Util.Convert import *
-from app.Util.SnowFlake_Counter import *
-from app.Util.AWSManager import AWSManger
+from source.Authentication.UserManager import UserManager
+from source.Authentication.User import User
+from source.Util.Convert import *
+from source.Util.SnowFlake_Counter import *
+from source.Util.AWSManager import AWSManger
 
 
 class API:
