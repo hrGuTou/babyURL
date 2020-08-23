@@ -68,6 +68,7 @@ class API:
                 remember = True if request.form.get('remember') else False
 
                 user_info = userManager.getUser(username)
+                print('from api',user_info)
                 if user_info:
                     user = User(user_info)
                     if user.verify(password):
@@ -85,12 +86,18 @@ class API:
 
         @self.app.route('/register', methods=["GET", "POST"])
         def create():
+            msg = None
             if request.method == 'POST':
                 username = request.form['username']
                 password = request.form['password']
+                pswRepeat = request.form['psw-repeat']
+                if not password == pswRepeat:
+                    msg = 'Password not match, try again'
+                    return render_template('register.html', message=msg)
+
                 userManager.createUser(username, password)
                 return redirect('/login')
-            return render_template('register.html')
+            return render_template('register.html', message=msg)
 
         @self.app.errorhandler(404)
         @self.app.route('/<shortURL>')

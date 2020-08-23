@@ -17,9 +17,10 @@ def load():
 class User(UserMixin):
     def __init__(self, user):
         self.aws = AWSManger()
-        self.username = user[0].get('username')
-        self.password = user[0].get('password')
-        self.id = user[0].get('id')
+        print("from user:",user)
+        self.username = user.get('username')
+        self.password = user.get('password')
+        self.id = user.get('id')
 
     def verify(self, password):
         return check_password_hash(self.password, password)
@@ -32,6 +33,7 @@ class User(UserMixin):
         aws = AWSManger()
         val = aws.getByID(user_id)
         if val:
+            print('from static',User(val))
             return User(val)
 
         return None

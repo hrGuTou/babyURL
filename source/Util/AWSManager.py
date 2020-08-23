@@ -15,7 +15,10 @@ class AWSManger:
         res = self.userTable.get_item(
             Key={'username': username}
         )
-        return res['Item']
+        print(res)
+        if 'Item' in res:
+            return res['Item']
+        return None
 
     def saveUserURL(self, username, shortUrl):
         self.userTable.update_item(
@@ -32,9 +35,10 @@ class AWSManger:
         res = self.userTable.scan(
             FilterExpression=Attr('id').eq(user_id)
         )
+        print(res)
         if res['Count'] == 0:
             return None
-        return res['Items']
+        return res['Items'][0]
 
     def saveURL(self, id, longURL):
         self.urlTable.put_item(
