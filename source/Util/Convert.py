@@ -39,4 +39,4 @@ def toBase10(input):
 
 if __name__ == "__main__":
     print(toBase62(1909146547183030277))
-    print(toBase10("2h1UvzPJhn7"))
+    print(toBase10("asdfasdfajiojoijoij"))

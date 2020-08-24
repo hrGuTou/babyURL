@@ -17,7 +17,6 @@ def load():
 class User(UserMixin):
     def __init__(self, user):
         self.aws = AWSManger()
-        print("from user:",user)
         self.username = user.get('username')
         self.password = user.get('password')
         self.id = user.get('id')
@@ -33,7 +32,6 @@ class User(UserMixin):
         aws = AWSManger()
         val = aws.getByID(user_id)
         if val:
-            print('from static',User(val))
             return User(val)
 
         return None

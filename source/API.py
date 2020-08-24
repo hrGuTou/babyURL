@@ -11,13 +11,17 @@ from source.Authentication.User import User
 from source.Util.Convert import *
 from source.Util.SnowFlake_Counter import *
 from source.Util.AWSManager import AWSManger
+from source.Cache.cache import Cache
+from source.Util.REDISManager import REDISManager
 
 
 class API:
     def __init__(self):
         self.app = Flask(__name__)
         self.aws = AWSManger()
+        self.redis = REDISManager()
         self.counter = generator(1,1)
+        self.cache = Cache()
         self.init()
 
 
@@ -52,9 +56,20 @@ class API:
             shortURL = None
 
             if request.method == 'POST':
+                id = self.counter.__next__()
+
                 longURL = request.form['longurl']
-                shortURL = self.shorten(longURL)
-                userManager.saveUserURL(usr, shortURL)
+                shortURL = toBase62(id)
+
+                if self.cache.cache_get(longURL) == -1:
+                    # if current input is not in cache, then save in cache and insert into db
+                    self.cache.cache_put(longURL, shortURL)
+                    userManager.saveUserURL(usr, shortURL)
+                    self.aws.saveURL(id, longURL)
+                else:
+                    # if current input is in cache, read from cache
+                    shortURL = self.cache.cache_get(longURL)
+                    print('read from cache')
                 return render_template('index.html', username=usr, shortURL=shortURL)
 
             return render_template('index.html', username=usr, shortURL=shortURL)
@@ -68,7 +83,6 @@ class API:
                 remember = True if request.form.get('remember') else False
 
                 user_info = userManager.getUser(username)
-                print('from api',user_info)
                 if user_info:
                     user = User(user_info)
                     if user.verify(password):
@@ -102,18 +116,26 @@ class API:
         @self.app.errorhandler(404)
         @self.app.route('/<shortURL>')
         def decodeURL(shortURL):
+            print(shortURL)
             id = str(toBase10(shortURL))
-            longURL = self.aws.getURL(id)
-            if longURL:
-                return redirect(longURL, code=302)
+            print(id)
+            # try to get from redis first
+            # if found in redis, return from redis
+            longURL = self.redis.get_from_redis(id)
+            #print(longURL)
 
-            return render_template('404.html'), 404
+            if longURL is None:
+                # not in redis, get from DB, then update redis
+                longURL = self.aws.getURL(id)
 
-    def shorten(self, longURL):
-        id = self.counter.__next__()
-        self.aws.saveURL(id, longURL)
-        shortURL = toBase62(id)
-        return shortURL
+                if longURL:
+                    self.redis.add_to_redis(id, longURL)
+                    return redirect(longURL, code=302)
+                else:
+                    return render_template('404.html'), 404
+
+            return redirect(longURL, code=302)
+
 
     def run(self):
         self.app.run(host='0.0.0.0', port=5000)

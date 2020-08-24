@@ -15,7 +15,6 @@ class AWSManger:
         res = self.userTable.get_item(
             Key={'username': username}
         )
-        print(res)
         if 'Item' in res:
             return res['Item']
         return None
@@ -35,7 +34,6 @@ class AWSManger:
         res = self.userTable.scan(
             FilterExpression=Attr('id').eq(user_id)
         )
-        print(res)
         if res['Count'] == 0:
             return None
         return res['Items'][0]
@@ -47,6 +45,7 @@ class AWSManger:
                 'longURL': longURL
             }
         )
+        print('aws saved')
 
     def getURL(self, id):
         res = self.urlTable.get_item(
