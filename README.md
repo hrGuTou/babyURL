@@ -1,5 +1,5 @@
 # babyURL   
-TinyURL-like url shortener.   
+TinyURL-like url shortener with qrcode.   
     
 * Implemented base62 encoding and twitter snowflake generate unique ID to avoid hash collisions.      
 * Using AWS dynamoDB as database storing unique ID as key and original URL as value.   
@@ -29,6 +29,8 @@ pip install boto3
 pip install flask
 pip install flask_login   
 pip install redis   
+pip install pyqrcode
+pip install pypng
 ```
 5) Start app from `app.py`    
 

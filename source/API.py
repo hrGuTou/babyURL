@@ -1,4 +1,3 @@
-import json
 from datetime import timedelta
 
 import flask_login
@@ -14,6 +13,9 @@ from source.Util.AWSManager import AWSManger
 from source.Cache.cache import Cache
 from source.Util.REDISManager import REDISManager
 
+import pyqrcode, png
+
+DOMAIN = ''
 
 class API:
     def __init__(self):
@@ -23,7 +25,6 @@ class API:
         self.counter = generator(1,1)
         self.cache = Cache()
         self.init()
-
 
     def init(self):
         userManager = UserManager()
@@ -54,6 +55,7 @@ class API:
         def main():
             usr = flask_login.current_user.username
             shortURL = None
+            strimg = None
 
             if request.method == 'POST':
                 id = self.counter.__next__()
@@ -62,7 +64,7 @@ class API:
                 shortURL = toBase62(id)
 
                 if self.cache.cache_get(longURL) == -1:
-                    # if current input is not in cache, then save in cache and insert into db
+                    # if current input is not in cache, then save in cache and insert into DB
                     self.cache.cache_put(longURL, shortURL)
                     userManager.saveUserURL(usr, shortURL)
                     self.aws.saveURL(id, longURL)
@@ -70,9 +72,14 @@ class API:
                     # if current input is in cache, read from cache
                     shortURL = self.cache.cache_get(longURL)
                     print('read from cache')
-                return render_template('index.html', username=usr, shortURL=shortURL)
 
-            return render_template('index.html', username=usr, shortURL=shortURL)
+            if shortURL:
+                # create qrcode svg
+                url = DOMAIN + shortURL
+                qrcode = pyqrcode.create(url)
+                strimg = qrcode.png_as_base64_str(scale=6)
+
+            return render_template('index.html', username=usr, shortURL=shortURL, qr=strimg)
 
         @self.app.route('/login', methods=['GET','POST'])
         def login():
@@ -116,9 +123,7 @@ class API:
         @self.app.errorhandler(404)
         @self.app.route('/<shortURL>')
         def decodeURL(shortURL):
-            print(shortURL)
             id = str(toBase10(shortURL))
-            print(id)
             # try to get from redis first
             # if found in redis, return from redis
             longURL = self.redis.get_from_redis(id)
