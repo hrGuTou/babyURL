@@ -31,6 +31,7 @@ pip install flask_login
 pip install redis   
 pip install pyqrcode
 pip install pypng
+pip install python-dotenv
 ```
 5) Start app from `app.py`    
 
