@@ -13,9 +13,10 @@ from source.Util.AWSManager import AWSManger
 from source.Cache.cache import Cache
 from source.Util.REDISManager import REDISManager
 
-import pyqrcode, png
+import pyqrcode
+import os
 
-DOMAIN = ''
+
 
 class API:
     def __init__(self):
@@ -75,7 +76,7 @@ class API:
 
             if shortURL:
                 # create qrcode svg
-                url = DOMAIN + shortURL
+                url = os.getenv('DOMAIN') + shortURL
                 qrcode = pyqrcode.create(url)
                 strimg = qrcode.png_as_base64_str(scale=6)
 
@@ -123,6 +124,7 @@ class API:
         @self.app.errorhandler(404)
         @self.app.route('/<shortURL>')
         def decodeURL(shortURL):
+            print(shortURL)
             id = str(toBase10(shortURL))
             # try to get from redis first
             # if found in redis, return from redis

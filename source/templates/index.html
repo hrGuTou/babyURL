@@ -1,33 +1,239 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
+    <head>
 
-<h1>Welcome, {{ username }}!</h1>
+        <title>BabyUrl</title>
+        <meta charset="utf-8">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+        <link rel="stylesheet" href="{{ url_for('static',filename='styles/index.css') }}">
 
-<p>Thank you for using babyURL. Enter the url that you would like to convert below, then get your babyURL. </p>
+    <head>
 
-<form action="" method="post">
-    <label for="longurl"><b>Your URL:</b></label>
-    <input type="text" placeholder="Enter Your Long URL" name="longurl" id="longurl" required>
-    <button type="submit" value="Submit">Get Your babyURL</button>
+    <body>
+        <div class="header">
+            <nav class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
+                <a class="navbar-brand" href="#">BabyURL</a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                    <a class="nav-link" href="#URL">URL</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#about">About</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" href="#terms">Terms and Conditions</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="/logout">Logout</a>
+                    </li>
+                </ul>
+                </div>
+            </nav>
+          </div>
 
-  </form>
-<br>
-<br>
-{% if shortURL %}
-<p>Here is your babyURL. Hope this was a great experience! Use us again! </p><br>
-<p>http://www.babyURL.com/{{ shortURL }}</p><br>
-<img src="data:image/png;base64, {{qr}}" alt="shortURL qrcode" />
-{% endif %}
-<br><br>
+          <header>
 
-<p>At babyURL we love making things better. Have a problem you think technology can fix? Let us know about it.<a href="#">Contact Us</a> </p>
-  
-<a href='/logout'>Log out</a>
+            <video playsinline="playsinline" autoplay="autoplay" muted="muted" loop="loop">
+              <source src="https://mdbootstrap.com/img/video/animation.mp4" type="video/mp4">
+            </video>
+            <div class="container h-100">
+              <div class="d-flex h-100 text-center align-items-center">
+                <div class="w-100 text-black">
 
-</body>
+                    <h1>Welcome, {{ username }}!</h1>
+                    <h3 class="display-3 font-weight-bold white-text mb-0 pt-md-5 pt-5">Baby URL</h3>
+                    <hr class="hr-light my-4 w-75">
+                    <h4 class="subtext-header mt-2 mb-4"> Shorten URLs with Baby URL.
+                        Free accounts to manage your links. </h4>
+
+                </div>
+              </div>
+            </div>
+          </header>
+
+
+
+
+        <section id="URL" class="py-5" style="background-color: rgb(255, 214, 214);">
+
+            <!-- Container -->
+            <div class="container">
+            <img class="center" src="/static/logo.jpg"/><br>
+            <hw class="text-center">
+            <p>Thank you for using babyURL. Enter the url that you would like to convert below, then get your babyURL. </p>
+            <br>
+            <form action="" method="post">
+                <label for="longurl"><b>Your URL:</b></label>
+                <input type="text" placeholder="Enter Your Long URL" name="longurl" id="longurl" required>
+                <button type="submit" value="Submit">Get Your babyURL</button>
+
+                </form>
+            <br>
+            <br>
+            {% if shortURL %}
+            <p>Here is your babyURL. Hope this was a great experience! Use us again! </p><br>
+            <p>http://www.babyURL.com/{{ shortURL }}</p>
+            <img class="center"src="data:image/png;base64, {{qr}}" alt="shortURL qrcode" />
+            {% endif %}
+            </hw>
+
+        </section>
+
+        <br><br>
+
+
+        <section id="about">
+            <div class="container">
+                <h2 class="h1-responsive font-weight-bold text-center mb-5">Why is it so great?</h2>
+                    <!-- Section description -->
+                <p class="lead grey-text text-center w-responsive mx-auto mb-5">Creating engaging social media posts to share content can drive traffic to any website. However, if you’re including a long, complex link in every post you share, you may be forfeiting clicks, shares, and engagement. Learning the benefits of our URL shortener can help you achieve better content marketing results.</p>
+
+                <div class="row">
+
+                    <!-- Grid column -->
+                    <div class="col-lg-5 text-center text-lg-left">
+                        <img class="img-fluid" src="https://follows-bc85.kxcdn.com/blog/wp-content/uploads/2017/11/Link-Shortener-Illustration.jpg" alt="Sample image">
+                    </div>
+                    <!-- Grid column -->
+
+                    <!-- Grid column -->
+                    <div class="col-lg-7">
+
+                        <!-- Grid row -->
+                        <div class="row mb-3">
+
+                            <!-- Grid column -->
+                            <div class="col-1">
+                                <i class="fa fa-mail-forward fa-lg purple-text"></i>
+                            </div>
+                            <!-- Grid column -->
+
+                            <!-- Grid column -->
+                            <div class="col-xl-10 col-md-11 col-10">
+                                <h5 class="font-weight-bold mb-3">1. Convenience</h5>
+                                <p class="grey-text">It’s much simpler to share a shorter link than a long, complicated one. This especially matters in scenarios where your audience can’t physically click your link or where you’re promoting your website one-to-one. If you’re giving a PowerPoint presentation or sharing a link directly with a prospective customer, a URL shortener can help you create a brief, memorable link that can be typed directly into a smartphone or web browser.</p>
+                            </div>
+                            <!-- Grid column -->
+
+                        </div>
+                        <!-- Grid row -->
+
+                        <!-- Grid row -->
+                        <div class="row mb-3">
+
+                            <!-- Grid column -->
+                            <div class="col-1">
+                                <i class="fa fa-mail-forward fa-lg purple-text"></i>
+                            </div>
+                            <!-- Grid column -->
+
+                            <!-- Grid column -->
+                            <div class="col-xl-10 col-md-11 col-10">
+                                <h5 class="font-weight-bold mb-3">2. Increased sharing
+                                </h5>
+                                <p class="grey-text">A shortened link is easier for your anyone to click, copy, and share in their own post, which can help your content gain organic exposure on social networks. One can simply fit more links and content in less space with URL shorteners. A tweet can describe and then link to a webpage in under 140 characters, while a full URL might not even come with an explanation.</p>
+                            </div>
+                            <!-- Grid column -->
+
+                        </div>
+                        <!-- Grid row -->
+
+                        <!--Grid row-->
+                        <div class="row">
+
+                            <!-- Grid column -->
+                            <div class="col-1">
+                                <i class="fa fa-mail-forward fa-lg purple-text"></i>
+                            </div>
+                            <!-- Grid column -->
+
+                            <!-- Grid column -->
+                            <div class="col-xl-10 col-md-11 col-10">
+                                <h5 class="font-weight-bold mb-3">3. Stronger engagement </h5>
+                                <p class="grey-text mb-0"> Audiences are more likely to engage with a shortened URL, especially if it’s recognizably associated with your brand. Shortened URLs can increase engagement by 39%, according to Rebrandly..</p>
+                            </div>
+                            <!-- Grid column -->
+
+                        </div>
+                        <!--Grid row-->
+                    </div>
+                    </div>
+                    </div>
+            </div>
+        </section>
+
+        <br><br>
+
+        <div class="streak streak-md streak-photo" style="background-image:url('https://previews.123rf.com/images/radionastya/radionastya1707/radionastya170700068/82688648-white-marble-texture-with-rose-gold-patina-effect-seamless-pattern-overlay-distress-grain-sequin-ros.jpg')">
+
+            <section id="terms">
+                <div class="container">
+                    <br>
+                    <!-- Section heading -->
+                    <hw class="text-center">
+                    <h2 class="h1-responsive font-weight-bold mb-5">Terms and Conditions</h2>
+                    <!-- Section description -->
+                    <p class="grey-text w-responsive mx-auto mb-5">BabyURL was created as a free service to make posting long URLs easier, and may only be used for actual URLs. Using it for spamming or illegal purposes is forbidden and any such use will result in the BabyURL being disabled and you may be reported to all ISPs involved and to the proper governmental agencies. This service is provided without warranty of any kind.</p>
+                    </hw>
+                    <br>
+
+                </div>
+            </section>
+
+
+                <div class="container">
+                <div class="flex-center rgba-black-light pattern-1">
+                    <div class="white-text smooth-scroll mx-4">
+                        <hw class="text-center"></h2>
+                        <h3 class="h3-responsive font-weight-bold mb-5">We'd love to hear from you, whether you have a question about our features, need a demo, assistance, or anything else. Our team is ready to answer all your questions. </h2>
+                        </div>
+                    </div>
+                </div>
+                </div>
+
+
+
+        </div>
+
+
+        <section id="contact" >
+
+            <div class="container" style="background-color: #eee;">
+                <br>
+                <h2 class="h1-responsive font-weight-bold text-center mb-5">Contact Us</h2>
+
+                <form action="">
+                    <label for="fname">First Name</label>
+                    <input type="text" id="fname" name="firstname" placeholder="Your name">
+
+                    <label for="lname">Last Name</label>
+                    <input type="text" id="lname" name="lastname" placeholder="Your last name">
+
+                    <label for="email">Email</label>
+                    <input type="text" id="email" name="email" placeholder="Your Email address">
+
+
+                    <label for="subject">Subject</label>
+                    <textarea id="subject" name="subject" placeholder="Write something.." style="height:200px"></textarea>
+
+                    <input type="submit" value="Submit">
+
+                  </form>
+            </div>
+
+        </section>
+
+
+        <br>
+
+    </body>
+
+
 </html>

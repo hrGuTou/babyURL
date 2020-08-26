@@ -15,12 +15,14 @@ Redis Cloud
 AWS ec2   
 
 ## Deploying
-1) Add '.env' file in root directory    
-2) Write your redis configurations with the following format    
+1) Add `.env` file in root directory    
+2) Add configurations into `.env` file         
 ```
 REDIS_HOST = <host>    
 REDIS_PORT = <port>     
-REDIS_PWD = <password>    
+REDIS_PWD = <password>
+
+DOMAIN = <Server domain>    
 ```   
 3) Run `aws configure` in with aws cli to connect with your aws
 4) pip install the following dependencies:   
@@ -30,7 +32,6 @@ pip install flask
 pip install flask_login   
 pip install redis   
 pip install pyqrcode
-pip install pypng
 pip install python-dotenv
 ```
 5) Start app from `app.py`    
