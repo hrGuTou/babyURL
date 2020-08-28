@@ -9,10 +9,6 @@ class REDISManager:
         self.init()
 
     def init(self):
-        print(environ.get('REDIS_HOST'))
-        print(int(environ.get('REDIS_PORT')))
-        print('pwd' , environ.get('REDIS_PWD'))
-
         self.redis = redis.Redis(
             host=environ.get('REDIS_HOST'),
             port=int(environ.get('REDIS_PORT')),
