@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 import flask_login
-from flask import Flask, request, render_template, session
+from flask import Flask, request, render_template, session, send_from_directory
 from flask_login import LoginManager, login_required, login_user, logout_user
 from werkzeug.utils import redirect
 
@@ -13,7 +13,7 @@ from source.Util.AWSManager import AWSManger
 from source.Cache.cache import Cache
 from source.Util.REDISManager import REDISManager
 
-import pyqrcode
+import pyqrcode, requests
 import os
 
 
@@ -35,13 +35,13 @@ class API:
         login_manager.init_app(self.app)
         login_manager.login_view = 'login'
         login_manager.refresh_view = 'relogin'
-        login_manager.needs_refresh_message = (u"Session timedout, please re-login")
+        login_manager.needs_refresh_message = u"Session timedout, please re-login"
         login_manager.needs_refresh_message_category = "info"
 
         @self.app.before_request
         def before_request():
             session.permanent = True
-            self.app.permanent_session_lifetime = timedelta(seconds=10)
+            self.app.permanent_session_lifetime = timedelta(minutes=5)
 
         @login_manager.user_loader
         def load_user(user_id):
@@ -51,17 +51,29 @@ class API:
         def unauthorized_callback():
             return redirect('/login')
 
+        @self.app.route('/favicon.ico')
+        def favicon():
+            return send_from_directory(os.path.join(self.app.root_path, 'static'),
+                                       'favicon.ico', mimetype='image/vnd.microsoft.icon')
+
         @self.app.route('/', methods=['GET', 'POST'])
         @login_required
         def main():
             usr = flask_login.current_user.username
             shortURL = None
             strimg = None
+            ErrorMsg = None
 
             if request.method == 'POST':
                 id = self.counter.__next__()
 
                 longURL = request.form['longurl']
+                try:
+                    r = requests.get(longURL)
+                except:
+                    ErrorMsg = "Invalid URL, please try again"
+                    return render_template('index.html', username=usr, shortURL=shortURL, qr=strimg, error=ErrorMsg)
+
                 shortURL = toBase62(id)
 
                 if self.cache.cache_get(longURL) == -1:
@@ -80,7 +92,7 @@ class API:
                 qrcode = pyqrcode.create(url)
                 strimg = qrcode.png_as_base64_str(scale=6)
 
-            return render_template('index.html', username=usr, shortURL=shortURL, qr=strimg)
+            return render_template('index.html', username=usr, shortURL=shortURL, qr=strimg, error=ErrorMsg)
 
         @self.app.route('/login', methods=['GET','POST'])
         def login():
@@ -122,14 +134,16 @@ class API:
             return render_template('register.html', message=msg)
 
         @self.app.errorhandler(404)
-        @self.app.route('/<shortURL>')
+        @self.app.route('/<string:shortURL>')
         def decodeURL(shortURL):
+            if not shortURL.isalnum():
+                return render_template('404.html'), 404
+
             print(shortURL)
             id = str(toBase10(shortURL))
             # try to get from redis first
             # if found in redis, return from redis
             longURL = self.redis.get_from_redis(id)
-            #print(longURL)
 
             if longURL is None:
                 # not in redis, get from DB, then update redis

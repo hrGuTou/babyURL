@@ -6,6 +6,7 @@
         <meta charset="utf-8">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
         <link rel="stylesheet" href="{{ url_for('static',filename='styles/index.css') }}">
+        <link rel="shortcut icon" href="{{ url_for('static', filename='favicon.ico') }}">
 
     <head>
 
@@ -77,10 +78,15 @@
                 </form>
             <br>
             <br>
+
+            {% if error %}
+                <p style="color:red">{{error}}</p>
+            {% endif %}
+
             {% if shortURL %}
             <p>Here is your babyURL. Hope this was a great experience! Use us again! </p><br>
             <p>http://www.babyURL.com/{{ shortURL }}</p>
-            <img class="center"src="data:image/png;base64, {{qr}}" alt="shortURL qrcode" />
+            <img class="center" src="data:image/png;base64, {{qr}}" alt="shortURL qrcode" />
             {% endif %}
             </hw>
 
