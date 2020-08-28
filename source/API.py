@@ -159,7 +159,7 @@ class API:
 
 
     def run(self):
-        self.app.run(host='0.0.0.0', port=5000)
+        self.app.run(port=80)
 
 
 if __name__ == "__main__":
