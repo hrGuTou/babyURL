@@ -1,8 +1,7 @@
-from flask_login import LoginManager
-from werkzeug.utils import redirect
-
 from dotenv import load_dotenv
 load_dotenv()
+from flask_login import LoginManager
+from werkzeug.utils import redirect
 from app.API import api
 from flask import Flask
 from app.Authentication.User import User
