@@ -1,5 +1,6 @@
 import redis
-import os
+from os import environ
+
 
 
 class REDISManager:
@@ -9,9 +10,9 @@ class REDISManager:
 
     def init(self):
         self.redis = redis.Redis(
-            host=os.getenv('REDIS_HOST'),
-            port=os.getenv('REDIS_PORT'),
-            password=os.getenv('REDIS_PWD')
+            host=environ.get('REDIS_HOST'),
+            port=environ.get('REDIS_PORT'),
+            password=environ.get('REDIS_PWD')
         )
 
     def test(self):

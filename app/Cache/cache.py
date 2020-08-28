@@ -1,4 +1,4 @@
-from source.Cache.LRU import LRU
+from app.Cache.LRU import LRU
 
 class Cache:
     def __init__(self):
