@@ -4,7 +4,7 @@ from boto3.dynamodb.conditions import Attr
 
 class AWSManger:
     def __init__(self):
-        self.dynamodb = boto3.resource('dynamodb')
+        self.dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
         self.userTable = self.dynamodb.Table('USERS')
         self.urlTable = self.dynamodb.Table('urlDB')
 
