@@ -1,4 +1,4 @@
-#!/usr/bin/python
+#!/bin/python
 import sys
 import logging
 logging.basicConfig(stream=sys.stderr)
