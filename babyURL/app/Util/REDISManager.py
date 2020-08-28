@@ -11,7 +11,7 @@ class REDISManager:
     def init(self):
         self.redis = redis.Redis(
             host=environ.get('REDIS_HOST'),
-            port=environ.get('REDIS_PORT'),
+            port=int(environ.get('REDIS_PORT')),
             password=environ.get('REDIS_PWD')
         )
 
