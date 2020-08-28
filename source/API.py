@@ -161,7 +161,3 @@ class API:
     def run(self):
         self.app.run(port=80)
 
-
-if __name__ == "__main__":
-    api = API()
-    api.run()
