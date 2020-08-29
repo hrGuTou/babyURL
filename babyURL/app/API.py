@@ -55,7 +55,7 @@ def main():
                     r = requests.get(longURL)
                 except:
                     ErrorMsg = "Invalid URL, please try again"
-                    return render_template('index.html', username=usr, shortURL=shortURL, qr=strimg, error=ErrorMsg)
+                    return render_template('index.html', username=usr, domain=os.getenv('DOMAIN'), shortURL=shortURL, qr=strimg, error=ErrorMsg)
 
                 shortURL = toBase62(id)
 
@@ -75,7 +75,7 @@ def main():
                 qrcode = pyqrcode.create(url)
                 strimg = qrcode.png_as_base64_str(scale=6)
 
-            return render_template('index.html', username=usr, shortURL=shortURL, qr=strimg, error=ErrorMsg)
+            return render_template('index.html', username=usr, domain=os.getenv('DOMAIN'), shortURL=shortURL, qr=strimg, error=ErrorMsg)
 
 
 @api.route('/login', methods=['GET','POST'])
@@ -111,11 +111,17 @@ def create():
                 username = request.form['username']
                 password = request.form['password']
                 pswRepeat = request.form['psw-repeat']
+
+                if aws.getUser(username):
+                    msg = 'Username already exist, please log in'
+                    return render_template('register.html', message=msg)
+
                 if not password == pswRepeat:
                     msg = 'Password not match, try again'
                     return render_template('register.html', message=msg)
 
                 userManager.createUser(username, password)
+
                 return redirect('/login')
             return render_template('register.html', message=msg)
 
