@@ -63,7 +63,9 @@ def generator(worker_id, data_center_id, sleep=lambda x: time.sleep(x/1000.0)):
 if __name__ == "__main__":
     s = generator(1,1)
     print(s.__next__())
+    time.sleep(1)
     print(s.__next__())
+    time.sleep(1)
     print(s.__next__())
     print(s.__next__())
     print(s.__next__())
