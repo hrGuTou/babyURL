@@ -20,10 +20,11 @@ AWS ec2
 
 #### Using WSGI        
 1) Install and start apache2 or httpd
-2) Clone the repository into `/var/www/`
-3) Modify the `flaskapp.wsgi` as needed
-4) Add the following script to the server configuration file  
-5) Restart your apache or httpd     
+2) Install `sudo yum install mod_wsgi`      
+3) Clone the repository into `/var/www/`
+4) Modify the `flaskapp.wsgi` as needed
+5) Add the following script to the server configuration file  
+6) Restart your apache or httpd     
      
 ```
 <VirtualHost *:80>
